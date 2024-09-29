@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khaatabook | Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .error {
+            opacity: 1;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" class="w-full h-screen sm:px-8 px-4 overflow-hidden">
+        <div class="navbar h-[6vh] w-full py-3 flex justify-between items-center">
+            <h1 class="text-xl font-semibold cursor-pointer">Khaatabook</h1>
+            <div class="nav-part-2 sm:w-[15%] h-full flex justify-end items-center text-blue-600">
+                <h5 class="text-lg cursor-pointer">Sign In</h5>
+            </div>
+        </div>
+
+        <div class="login sm:h-[94vh] h-[80vh] w-full flex items-center justify-center">
+            <div class="h-[30%] w-[75%]">
+                <h4 class="text-xl mb-2 text-center w-full">Login your account</h4>
+                <form action="/signin" method="post" class="flex flex-col gap-2 sm:items-start">
+                    <input type="text" placeholder="Email" name="email" required
+                        class="px-2 py-1 sm:w-[18vw] border border-zinc-400 outline-none rounded bg-zinc-100">
+                    <input type="password" placeholder="Password" name="password" required
+                        class="px-2 py-1 sm:w-[18vw] border border-zinc-400 outline-none rounded bg-zinc-100">
+                    <input type="submit" value="Sign In" class="px-5 py-1 bg-blue-500 text-white rounded-md">
+
+                    <h4 class="w-full text-center">No account? <a href="/signup" class="text-blue-600">Create a
+                            New
+                            account</a></h4>
+                </form>
+            </div>
+        </div>
+
+        <% if(signInMessage) { %>
+            <div id="flash-message" class="error absolute left-1/2 -translate-x-[50%] top-10 rounded bg-red-500 text-white px-7 py-2">
+                <%= signInMessage %>
+            </div>
+            <% } %>
+    </div>
+
+    <script>
+        setTimeout(function () {
+            var flashMessage = document.getElementById('flash-message');
+
+            if (flashMessage) {
+                flashMessage.classList.add('hidden'); // Start the fade-out
+                setTimeout(function () {
+                    flashMessage.style.display = 'none'; // Remove from DOM
+                }, 2000); // Wait for the fade to complete
+            }
+        }, 3000);
+    </script>
+</body>
+
+</html>

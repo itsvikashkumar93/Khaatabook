@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khaatabook | edit hisaab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div id="main" class="w-full h-screen sm:px-8 px-4">
+        <%- include('./partials/navbar'); -%>
+
+            <h1 class="text-xl mt-8 font-semibold">You're editing hisaab named <span class="text-blue-700">
+                    <%= hisaab.title %>
+                </span></h1>
+            <form action="/hisaab/edit/<%=hisaab._id%>" method="post"
+                class="flex flex-col mt-5 justify-center gap-2 sm:w-[30%] w-full">
+                <input type="text" name="title" placeholder="title of your hisaab"
+                    class="border px-3 py-2 text-lg outline-none border-zinc-600 rounded" value="<%=hisaab.title%>">
+
+                <textarea name="desc" placeholder="Description"
+                    class="border px-3 py-2 text-lg rounded sm:h-[40vh] h-[30vh] outline-none border-zinc-600 resize-none"><%= hisaab.desc %></textarea>
+
+                <input type="submit" class="border px-5 py-2 text-lg w-fit rounded-md bg-blue-500 text-white"
+                    value="Update hisaab">
+            </form>
+    </div>
+</body>
+
+</html>

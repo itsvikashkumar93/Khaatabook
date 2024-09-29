@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khaatabook | hisaab</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div id="main" class="w-full h-screen sm:px-8 px-4">
+        <%- include('./partials/navbar'); -%>
+
+            <div class="show py-8">
+                <div class="top flex flex-wrap gap-2 items-center">
+                    <% if(hisaab.encrypted){ %>
+                        <div class="">
+                            <button class="px-3 py-1 text-sm mr-2 bg-blue-600 text-white rounded"><i
+                                    class="ri-lock-line"></i>
+                                Encrypted</button>
+                            <i class="ri-eye-off-line px-3 py-2 text-sm rounded-md bg-zinc-300 text-zinc-600"></i>
+                        </div>
+                        <% }else {%>
+                            <div class="">
+                                <button class="px-3 py-1 text-sm mr-2 bg-green-600 text-white rounded"><i
+                                        class="ri-check-line"></i> Available</button>
+                            </div>
+                            <%}%>
+                                <h4 class="text-lg mx-5 cursor-pointer"><i class="ri-share-line"></i> share as a link
+                                </h4>
+                                <a href="/hisaab/delete/<%= hisaab._id %>"
+                                    class="px-4 py-1 text-sm mr-2 bg-red-600 text-white rounded">Delete</a>
+
+                                <a href="/hisaab/edit/<%= hisaab._id %>"
+                                    class="px-4 py-1 text-sm mr-2 bg-orange-500 text-white rounded">Edit</a>
+                </div>
+
+                <p class=" mt-2 text-zinc-400">Created on <span>
+                        <%= hisaab.date.toISOString().slice(0,10).split('-').reverse().join('-') %>
+                    </span></p>
+                <h3 class="text-xl font-semibold mt-5">
+                    <%=hisaab.title%>
+                </h3>
+                <p class="text-lg mt-1">
+                    <%=hisaab.desc%>
+                </p>
+
+            </div>
+
+    </div>
+</body>
+
+</html>

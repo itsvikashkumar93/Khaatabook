@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khaatabook</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        .error {
+            opacity: 1;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="main" class="w-full h-screen sm:px-8 px-4">
+        <%- include('./partials/navbar'); -%>
+
+            <div class="hisaabs">
+                <div class="filter py-8">
+                    <button class="sm:px-5 px-3 py-2 sm:mr-5 mr-2 bg-zinc-100 rounded-md">Filters <i
+                            class="ri-sound-module-line"></i></button>
+                    <button class="sm:px-5 px-3 py-2 sm:mr-5 mr-2 bg-zinc-100 rounded-md">By date <i
+                            class="ri-calendar-line"></i></button>
+                    <button class="sm:px-5 px-3 py-2 sm:mr-5 bg-blue-600 text-white rounded-md">Newest First <i
+                            class="ri-arrow-down-s-line"></i></button>
+                </div>
+                <div class="py-3 flex flex-wrap sm:gap-8 gap-4">
+                    <% if(hisaabs.length> 0) { %>
+                        <% hisaabs.forEach((hisaab)=> { %>
+                            <div class="sm:h-32 sm:w-[28vw] w-full bg-zinc-100 px-3 sm:py-2 py-4 shrink-0 rounded text-white">
+                                <div class="flex items-center justify-between">
+                                    <% if(hisaab.encrypted) { %>
+                                        <div>
+                                            <button class="px-3 py-1 text-sm mr-2 bg-blue-600 text-white rounded">
+                                                <i class="ri-lock-line"></i> Encrypted
+                                            </button>
+                                            <i
+                                                class="ri-eye-off-line px-3 py-2 text-sm rounded-md bg-zinc-300 text-zinc-600"></i>
+                                        </div>
+                                        <% } else { %>
+                                            <div>
+                                                <button class="px-3 py-1 text-sm mr-2 bg-green-600 text-white rounded">
+                                                    <i class="ri-check-line"></i> Available
+                                                </button>
+                                            </div>
+                                            <% } %>
+                                                <p class="text-zinc-500 text-sm">
+                                                    Created on <%= hisaab.date.toISOString().slice(0,
+                                                        10).split('-').reverse().join('-') %>
+                                                </p>
+                                </div>
+                                <h2 class="text-zinc-900 font-semibold sm:text-xl text-[6vw] mt-2">
+                                    <%= hisaab.title %>
+                                </h2>
+                                <% if (hisaab.encrypted) { %>
+                                    <button onclick="showPasswordModel('<%= hisaab._id %>')"
+                                        class="bg-red-500 text-white px-3 py-1 text-base rounded-md mt-2">
+                                        Unlock
+                                    </button>
+                                    <% } else { %>
+                                        <a href="/hisaab/<%= hisaab._id %>"
+                                            class="text-zinc-500 text-base underline mt-4">
+                                            View Hisaab
+                                        </a>
+                                        <% } %>
+                            </div>
+                            <% }) %>
+                                <% } else { %>
+                                    <h1 class="text-lg">Nothing to show, create a hisaab</h1>
+                                    <% } %>
+                </div>
+                <!-- Single Password Model (Outside the loop) -->
+                <div id="passwordModel"
+                    class="fixed inset-0 px-4 sm:px-0 hidden bg-gray-600 bg-opacity-50 flex items-center justify-center">
+                    <div class="bg-white p-6 rounded-md shadow-md max-w-md w-full">
+                        <h2 class="text-lg font-semibold mb-4">Enter Password</h2>
+                        <% if (errorMessage) { %>
+                            <div class="bg-red-100 text-red-700 p-2 rounded-md mb-4">
+                                <%= errorMessage %>
+                            </div>
+                            <% } %>
+                                <form id="passwordForm" action="" method="POST">
+                                    <input type="hidden" name="hisaabId" id="hisaabId">
+                                    <div class="mb-4">
+                                        <label for="password"
+                                            class="block text-sm font-medium text-gray-700">Password</label>
+                                        <input type="password" name="password" id="password"
+                                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
+                                    </div>
+                                    <div class="flex justify-end">
+                                        <button type="submit"
+                                            class="bg-blue-500 text-white px-4 py-2 rounded-md">Unlock</button>
+                                        <button type="button" onclick="hidePasswordModel()"
+                                            class="ml-4 bg-gray-500 text-white px-4 py-2 rounded-md">Cancel</button>
+                                    </div>
+                                </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <% if(errorMessage) { %>
+                <div id="flash-message" class="error absolute left-1/2 -translate-x-[50%] top-4 rounded bg-red-500 text-white px-5 py-2">
+                    <%= errorMessage %>
+                </div>
+                <% } %>
+                
+                    <% if(signInSuccess) { %>
+                        <div id="flash-message2"
+                            class="error absolute left-1/2 -translate-x-[50%] top-4 rounded bg-green-500 text-white px-5 py-2">
+                            <%= signInSuccess %>
+                        </div>
+                        <% } %>
+    </div>
+
+
+    <!-- Model Script -->
+
+    <script>
+        function showPasswordModel(hisaabId) {
+            document.getElementById('passwordModel').classList.remove('hidden');
+            document.getElementById('hisaabId').value = hisaabId;
+            document.getElementById('passwordForm').action = `/hisaab/${hisaabId}/unlock`;
+        }
+
+        function hidePasswordModel() {
+            document.getElementById('passwordModel').classList.add('hidden');
+        }
+
+        setTimeout(function () {
+            var flashMessage = document.getElementById('flash-message');
+
+            if (flashMessage) {
+                flashMessage.classList.add('hidden'); // Start the fade-out
+                setTimeout(function () {
+                    flashMessage.style.display = 'none'; // Remove from DOM
+                }, 2000); // Wait for the fade to complete
+            }
+        }, 3000); // Wait
+        setTimeout(function () {
+            var flashMessage2 = document.getElementById('flash-message2');
+
+            if (flashMessage2) {
+                flashMessage2.classList.add('hidden'); // Start the fade-out
+                setTimeout(function () {
+                    flashMessage2.style.display = 'none'; // Remove from DOM
+                }, 2000); // Wait for the fade to complete
+            }
+        }, 3000); // Wait
+    </script>
+
+
+</body>
+
+</html>

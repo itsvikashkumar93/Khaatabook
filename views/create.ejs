@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khaatabook | create hisaab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div id="main" class="w-full h-screen sm:px-8 px-4">
+        <%- include('./partials/navbar'); -%>
+
+            <h1 class="text-2xl mt-8 font-semibold">Create New Hisaab</h1>
+            <form action="/hisaab/create" method="post" class="flex flex-col mt-5 justify-center gap-2 sm:w-[30%] w-full">
+                <input type="text" name="title" required placeholder="Title of your hisaab"
+                    class="border px-3 py-2 text-lg outline-none border-zinc-600 rounded">
+
+                <textarea name="desc" required placeholder="Description"
+                    class="border px-3 py-2 text-lg mt-2 rounded sm:h-[40vh] h-[30vh] resize-none outline-none border-zinc-600"></textarea>
+
+                <div id="checkbox" class="flex w-full justify-between mt-3">
+                    <div id="left" class="w-[45%]">
+                        <div class="mb-4 flex items-center">
+                            <input type="checkbox" name="encrypted" id="encrypted"
+                                class="h-4 w-4 text-indigo-600 border-gray-300 rounded" onclick="togglePasswordField()">
+                            <label for="encrypted" class="ml-2 block text-lg text-gray-800">Encrypt this file</label>
+                        </div>
+
+                        <!-- Password Field (shown only when encryption is selected) -->
+                        <div class="mb-4" id="passwordField" style="display: none;">
+                            <input type="password" name="password" id="password" placeholder="Password"
+                                class="mt-1 block w-full px-3 py-2 text-lg outline-none border border-zinc-400 rounded-md">
+                        </div>
+                    </div>
+                    <div id="right" class="w-[45%] ">
+                        <div class="mb-4 flex items-center">
+                            <input type="checkbox" name="shareable" id="shareable"
+                                class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                onclick="toggleEditPermission()">
+                            <label for="shareable" class="ml-2 block text-lg text-gray-800">Shareable file</label>
+                        </div>
+
+                        <!-- Edit Permission Field (shown only when shareable is selected) -->
+                        <div class="mb-4 items-center" id="editPermissionField" style="display: none;">
+                            <input type="checkbox" name="editPermission" id="editPermission"
+                                class="h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                            <label for="editPermission" class="ml-2 block text-lg text-gray-700">Allow Edit
+                                Permission</label>
+                        </div>
+
+                    </div>
+                </div>
+                <input type="submit" class="border px-5 py-2 text-lg w-fit rounded-md bg-blue-500 text-white"
+                    value="Create Hisaab">
+            </form>
+    </div>
+
+
+    <script>
+        // Toggle Password Field
+        function togglePasswordField() {
+            const encryptedCheckbox = document.getElementById('encrypted');
+            const passwordField = document.getElementById('passwordField');
+            passwordField.style.display = encryptedCheckbox.checked ? 'block' : 'none';
+        }
+
+        // Toggle Edit Permission Field
+        function toggleEditPermission() {
+            const shareableCheckbox = document.getElementById('shareable');
+            const editPermissionField = document.getElementById('editPermissionField');
+            editPermissionField.style.display = shareableCheckbox.checked ? 'flex' : 'none';
+        }
+    </script>
+</body>
+
+</html>
+
+<!-- <form action="/hisaab/create" method="POST" class="max-w-lg mx-auto p-6 bg-white rounded-md shadow-md">
+    <div class="mb-4">
+        <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+        <input type="text" name="title" id="title" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            required>
+    </div>
+
+    <div class="mb-4">
+        <label for="desc" class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea name="desc" id="desc" rows="3"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"></textarea>
+    </div>
+
+
+
+    <div class="mt-6">
+        <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">
+            Submit
+        </button>
+    </div>
+</form> -->
