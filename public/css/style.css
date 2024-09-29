@@ -1,0 +1,38 @@
+.nav-part-2 {
+  height: 100%;
+  width: 15%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hamburger {
+  display: none;
+}
+.menu {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .nav-part-2 {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .menu {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    padding: 4vw 2vw;
+    font-size: 5.5vw;
+    background: #dadada;
+  }
+}

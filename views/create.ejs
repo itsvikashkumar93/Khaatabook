@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khaatabook | create hisaab</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -13,7 +15,8 @@
         <%- include('./partials/navbar'); -%>
 
             <h1 class="text-2xl mt-8 font-semibold">Create New Hisaab</h1>
-            <form action="/hisaab/create" method="post" class="flex flex-col mt-5 justify-center gap-2 sm:w-[30%] w-full">
+            <form action="/hisaab/create" method="post"
+                class="flex flex-col mt-5 justify-center gap-2 sm:w-[30%] w-full">
                 <input type="text" name="title" required placeholder="Title of your hisaab"
                     class="border px-3 py-2 text-lg outline-none border-zinc-600 rounded">
 
@@ -73,28 +76,8 @@
             editPermissionField.style.display = shareableCheckbox.checked ? 'flex' : 'none';
         }
     </script>
+    <script src="/js/script.js"></script>
+
 </body>
 
 </html>
-
-<!-- <form action="/hisaab/create" method="POST" class="max-w-lg mx-auto p-6 bg-white rounded-md shadow-md">
-    <div class="mb-4">
-        <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-        <input type="text" name="title" id="title" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            required>
-    </div>
-
-    <div class="mb-4">
-        <label for="desc" class="block text-sm font-medium text-gray-700">Description</label>
-        <textarea name="desc" id="desc" rows="3"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"></textarea>
-    </div>
-
-
-
-    <div class="mt-6">
-        <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">
-            Submit
-        </button>
-    </div>
-</form> -->

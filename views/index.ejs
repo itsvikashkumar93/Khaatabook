@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khaatabook</title>
+    <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -22,7 +23,7 @@
 
 <body>
 
-    <div id="main" class="w-full h-screen sm:px-8 px-4">
+    <div id="main" class="w-full h-screen relative sm:px-8 px-4">
         <%- include('./partials/navbar'); -%>
 
             <div class="hisaabs">
@@ -37,7 +38,8 @@
                 <div class="py-3 flex flex-wrap sm:gap-8 gap-4">
                     <% if(hisaabs.length> 0) { %>
                         <% hisaabs.forEach((hisaab)=> { %>
-                            <div class="sm:h-32 sm:w-[28vw] w-full bg-zinc-100 px-3 sm:py-2 py-4 shrink-0 rounded text-white">
+                            <div
+                                class="sm:h-32 sm:w-[28vw] w-full bg-zinc-100 px-3 sm:py-2 py-4 shrink-0 rounded text-white">
                                 <div class="flex items-center justify-between">
                                     <% if(hisaab.encrypted) { %>
                                         <div>
@@ -109,18 +111,13 @@
 
             </div>
 
-            <% if(errorMessage) { %>
-                <div id="flash-message" class="error absolute left-1/2 -translate-x-[50%] top-4 rounded bg-red-500 text-white px-5 py-2">
-                    <%= errorMessage %>
+            <% if(errorMessage || signInSuccess || successMessage) { %>
+                <div id="flash-message"
+                    class="error absolute left-1/2 -translate-x-[50%] top-4 rounded <%= errorMessage ? 'bg-red-500' : 'bg-green-500' %> text-white px-5 py-2">
+                    <%= errorMessage || signInSuccess || successMessage %>
                 </div>
                 <% } %>
-                
-                    <% if(signInSuccess) { %>
-                        <div id="flash-message2"
-                            class="error absolute left-1/2 -translate-x-[50%] top-4 rounded bg-green-500 text-white px-5 py-2">
-                            <%= signInSuccess %>
-                        </div>
-                        <% } %>
+
     </div>
 
 
@@ -147,18 +144,10 @@
                 }, 2000); // Wait for the fade to complete
             }
         }, 3000); // Wait
-        setTimeout(function () {
-            var flashMessage2 = document.getElementById('flash-message2');
-
-            if (flashMessage2) {
-                flashMessage2.classList.add('hidden'); // Start the fade-out
-                setTimeout(function () {
-                    flashMessage2.style.display = 'none'; // Remove from DOM
-                }, 2000); // Wait for the fade to complete
-            }
-        }, 3000); // Wait
+        // Wait
     </script>
 
+    <script src="/js/script.js"></script>
 
 </body>
 

@@ -104,7 +104,8 @@ router.post("/edit/:id", isLoggedIn, async (req, res) => {
     { title, desc },
     { new: true }
   );
-  res.redirect(`/hisaab/${req.params.id}`);
+  req.flash("successMessage", "Updated successfully!");
+  res.redirect(`/`);
 });
 
 // Delete hisaab
