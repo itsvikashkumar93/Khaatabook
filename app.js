@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const mongooseConnection = require("./config/mongoose");
-const userModel = require("./models/user");
 const expressSession = require("express-session");
 const methodOverride = require("method-override");
 const flash = require("connect-flash");

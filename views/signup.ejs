@@ -6,6 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khaatabook | SignIn</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        .error {
+            opacity: 1;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,7 +31,9 @@
         <div class="login sm:h-[94vh] h-[80vh] w-full flex items-center justify-center">
             <div class="h-[30%] w-[75%] sm:w-fit">
                 <h4 class="text-xl mb-2 text-center w-full">Create new account</h4>
-                <form action="/signup" method="post" class="flex flex-col gap-2 sm:items-start" >
+                <form action="/signup" method="post" class="flex flex-col gap-2 sm:items-start">
+                    <input type="text" placeholder="Full Name" name="name" required
+                        class="px-2 py-1 sm:w-[18vw] border border-zinc-400 outline-none rounded bg-zinc-100">
                     <input type="text" placeholder="Email" name="email" required
                         class="px-2 py-1 sm:w-[18vw] border border-zinc-400 outline-none rounded bg-zinc-100">
                     <input type="password" placeholder="Password" name="password" required
@@ -29,7 +42,27 @@
                 </form>
             </div>
         </div>
+
+        <% if(signUpMessage) { %>
+            <div id="flash-message"
+                class="error absolute left-1/2 -translate-x-[50%] top-10 rounded bg-red-500 text-white px-7 py-2">
+                <%= signUpMessage %>
+            </div>
+            <% } %>
     </div>
+
+    <script>
+        setTimeout(function () {
+            var flashMessage = document.getElementById('flash-message');
+
+            if (flashMessage) {
+                flashMessage.classList.add('hidden'); // Start the fade-out
+                setTimeout(function () {
+                    flashMessage.style.display = 'none'; // Remove from DOM
+                }, 2000); // Wait for the fade to complete
+            }
+        }, 3000);
+    </script>
 </body>
 
 </html>

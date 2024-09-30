@@ -1,9 +1,8 @@
 .nav-part-2 {
   height: 100%;
-  width: 15%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 1.5vw;
 }
 
 .hamburger {

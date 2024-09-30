@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
-
     <style>
         .error {
             opacity: 1;
@@ -18,24 +17,31 @@
         .hidden {
             opacity: 0;
         }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
-
     <div id="main" class="w-full h-screen relative sm:px-8 px-4">
         <%- include('./partials/navbar'); -%>
 
-            <div class="hisaabs">
-                <div class="filter py-8">
-                    <button class="sm:px-5 px-3 py-2 sm:mr-5 mr-2 bg-zinc-100 rounded-md">Filters <i
+            <div class="hisaabs h-[92vh]">
+                <div class="filter sm:py-8 py-5">
+                    <button class="sm:px-5 px-2 py-2 sm:mr-5 mr-1 bg-zinc-100 rounded-md">Filters <i
                             class="ri-sound-module-line"></i></button>
-                    <button class="sm:px-5 px-3 py-2 sm:mr-5 mr-2 bg-zinc-100 rounded-md">By date <i
+                    <button class="sm:px-5 px-2 py-2 sm:mr-5 mr-1 bg-zinc-100 rounded-md">By date <i
                             class="ri-calendar-line"></i></button>
-                    <button class="sm:px-5 px-3 py-2 sm:mr-5 bg-blue-600 text-white rounded-md">Newest First <i
+                    <button class="sm:px-5 px-2 py-2 sm:mr-5 bg-blue-600 text-white rounded-md">Newest First <i
                             class="ri-arrow-down-s-line"></i></button>
                 </div>
-                <div class="py-3 flex flex-wrap sm:gap-8 gap-4">
+                <h1 class="text-xl mb-3">Hello <span class="font-semibold">
+                        <%= name %>
+                    </span>
+                </h1>
+                <div class="py-3 flex flex-wrap sm:gap-8 gap-4 no-scrollbar h-[75%] overflow-y-auto">
                     <% if(hisaabs.length> 0) { %>
                         <% hisaabs.forEach((hisaab)=> { %>
                             <div
@@ -119,7 +125,6 @@
                 <% } %>
 
     </div>
-
 
     <!-- Model Script -->
 

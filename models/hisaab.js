@@ -10,7 +10,7 @@ const hisaabSchema = new mongoose.Schema({
     type: String,
     required: function () {
       return this.encrypted;
-    }, // Require password if encrypted is true
+    },
   },
   shareable: { type: Boolean, default: false },
   editPermission: {
@@ -18,7 +18,7 @@ const hisaabSchema = new mongoose.Schema({
     default: false,
     validate: {
       validator: function () {
-        return !this.editPermission || this.shareable; // editPermission can only be true if shareable is true
+        return !this.editPermission || this.shareable;
       },
       message: "Edit permission can only be set if the hisaab is shareable.",
     },

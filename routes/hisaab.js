@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const isLoggedIn = require("../middlewares/isLoggedIn");
-const userModel = require("../models/user");
+const { userModel } = require("../models/user");
 const hisaabModel = require("../models/hisaab");
 const flash = require("connect-flash");
 

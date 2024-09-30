@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const flash = require("connect-flash");
 const bcrypt = require("bcrypt");
-const userModel = require("../models/user");
+const { userModel, validateUser } = require("../models/user");
 
 router.get("/signin", (req, res) => {
   const signInMessage = req.flash("signInMessage");
@@ -12,7 +12,10 @@ router.get("/signin", (req, res) => {
 });
 
 router.get("/signup", (req, res) => {
-  res.render("signup");
+  const signUpMessage = req.flash("signUpMessage");
+  res.render("signup", {
+    signUpMessage: signUpMessage.length > 0 ? signUpMessage[0] : null,
+  });
 });
 
 router.post("/signin", async (req, res) => {
@@ -31,23 +34,52 @@ router.post("/signin", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { name, email, password } = req.body;
 
-  const existingUser = await userModel.findOne({ email });
+    const existingUser = await userModel.findOne({ email });
 
-  if (existingUser) {
-    req.flash("signInMessage", "You are an existing user, please sign in");
-    return res.redirect("/signin");
+    if (existingUser) {
+      req.flash("signInMessage", "You are an existing user, please sign in");
+      return res.redirect("/signin");
+    }
+
+    const { error } = validateUser({ name, email, password });
+
+    if (error) {
+      req.flash("signUpMessage", error.details[0].message);
+      return res.redirect("/signup");
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = await userModel.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    req.session.user = user.email;
+
+    res.redirect("/");
+  } catch (error) {
+    req.flash(
+      "signUpMessage",
+      "There was an error signing up. Please try again."
+    );
+    return res.redirect("/signup");
   }
+});
 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-
-  const user = await userModel.create({ email, password: hashedPassword });
-
-  req.session.user = user.email;
-
-  res.redirect("/");
+router.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.redirect("/");
+    }
+    res.clearCookie("connect.sid");
+    res.redirect("/");
+  });
 });
 
 module.exports = router;
