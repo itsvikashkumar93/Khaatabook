@@ -6,16 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khaatabook | Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .error {
-            opacity: 1;
-            transition: opacity 2s ease-in-out;
-        }
-
-        .hidden {
-            opacity: 0;
-        }
-    </style>
 </head>
 
 <body>
@@ -45,7 +35,8 @@
         </div>
 
         <% if(signInMessage) { %>
-            <div id="flash-message" class="error absolute left-1/2 -translate-x-[50%] top-10 rounded bg-red-500 text-white px-7 py-2">
+            <div id="flash-message"
+                class="error absolute left-1/2 -translate-x-[50%] top-12 sm:top-4 rounded bg-red-500 text-white sm:px-5 px-3 py-2 text-sm sm:text-base text-center">
                 <%= signInMessage %>
             </div>
             <% } %>
@@ -56,10 +47,9 @@
             var flashMessage = document.getElementById('flash-message');
 
             if (flashMessage) {
-                flashMessage.classList.add('hidden'); 
                 setTimeout(function () {
                     flashMessage.style.display = 'none';
-                }, 2000); 
+                }, 2000);
             }
         }, 3000);
     </script>

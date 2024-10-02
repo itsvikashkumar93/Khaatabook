@@ -15,9 +15,8 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
   try {
     const { title, desc, encrypted, password, shareable, editPermission } =
       req.body;
-    console.log(req.body);
 
-    const user = await userModel.findOne({ email: req.session.user });
+    const user = await userModel.findOne({ email: req.session.user.email });
 
     let newHisaab = new hisaabModel({
       title,
@@ -48,17 +47,40 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
 // Show Hisaab
 router.get("/:id", isLoggedIn, async (req, res) => {
   try {
+    const userId = req.session.user._id;
     const hisaab = await hisaabModel.findOne({ _id: req.params.id });
+    let editHisaab = false;
+    let deleteHisaab = false;
+    const baseUrl = "https://khaatabook-w32l.onrender.com";
+
+    if (
+      hisaab.user.toString() === userId.toString() ||
+      (hisaab.shareable && hisaab.editPermission)
+    ) {
+      editHisaab = true;
+    }
+    if (hisaab.user.toString() === userId.toString()) {
+      deleteHisaab = true;
+    }
+
     if (!hisaab) {
       return res.status(404).send("Hisaab not found");
     }
+
+    const successMessage = req.flash("success");
 
     // Check if Hisaab is encrypted
     if (hisaab.encrypted) {
       return res.render("hisaabPasswordPrompt", { hisaabId: hisaab._id });
     }
 
-    res.render("hisaab", { hisaab });
+    res.render("hisaab", {
+      hisaab,
+      editHisaab,
+      deleteHisaab,
+      baseUrl,
+      successMessage: successMessage.length > 0 ? successMessage[0] : null,
+    });
   } catch (error) {
     console.error("Error fetching Hisaab:", error);
     res.status(500).send("Internal Server Error");
@@ -82,9 +104,17 @@ router.post("/:id/unlock", async (req, res) => {
         return res.redirect("back");
       }
     }
+    let editHisaab = true;
+    let deleteHisaab = true;
+    const successMessage = req.flash("success");
 
     // If password is correct or Hisaab is not encrypted, render the Hisaab details
-    res.render("hisaab", { hisaab });
+    res.render("hisaab", {
+      hisaab,
+      editHisaab,
+      deleteHisaab,
+      successMessage: successMessage.length > 0 ? successMessage[0] : null,
+    });
   } catch (error) {
     console.error("Error unlocking Hisaab:", error);
     res.status(500).send("Internal Server Error");
@@ -111,13 +141,21 @@ router.post("/edit/:id", isLoggedIn, async (req, res) => {
 // Delete hisaab
 router.get("/delete/:id", isLoggedIn, async (req, res) => {
   const hisaab = await hisaabModel.findOneAndDelete({ _id: req.params.id });
-  const user = await userModel.findOne({ email: req.session.user });
+  const user = await userModel.findOne({ email: req.session.user.email });
   const index = user.hisaabs.indexOf(req.params.id);
   if (index !== -1) {
     user.hisaabs.splice(index, 1);
   }
   await user.save();
   res.redirect("/");
+});
+
+router.get("/share/:id", (req, res) => {
+  // Flash success message
+  req.flash("success", "Link copied to clipboard!");
+
+  // Redirect to the same page or wherever you want
+  res.redirect("back");
 });
 
 module.exports = router;

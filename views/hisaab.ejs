@@ -17,40 +17,73 @@
             <div class="show py-8">
                 <div class="top flex flex-wrap gap-2 items-center">
                     <% if(hisaab.encrypted){ %>
-                        <div class="">
-                            <button class="px-3 py-1 text-sm mr-2 bg-blue-600 text-white rounded"><i
+                        <div class="flex items-center">
+                            <button class="sm:px-4 px-3 py-1 mr-3 bg-blue-600 text-white cursor-default rounded"><i
                                     class="ri-lock-line"></i>
                                 Encrypted</button>
-                            <i class="ri-eye-off-line px-3 py-2 text-sm rounded-md bg-zinc-300 text-zinc-600"></i>
+                            <i class="ri-eye-off-line px-3 py-1 mr-2  rounded-md bg-zinc-300 text-zinc-600"></i>
                         </div>
                         <% }else {%>
                             <div class="">
-                                <button class="px-3 py-1 text-sm mr-2 bg-green-600 text-white rounded"><i
+                                <button class="sm:px-4 px-3 py-1 bg-green-600 text-white cursor-default rounded"><i
                                         class="ri-check-line"></i> Available</button>
                             </div>
                             <%}%>
-                                <h4 class="text-lg mx-5 cursor-pointer"><i class="ri-share-line"></i> share as a link
-                                </h4>
-                                <a href="/hisaab/delete/<%= hisaab._id %>"
-                                    class="px-4 py-1 text-sm mr-2 bg-red-600 text-white rounded">Delete</a>
+                                <% if (!hisaab.encrypted) { %>
+                                    <a href="/hisaab/share/<%= hisaab._id %>"
+                                        class="share-link sm:px-4 px-3 py-1 rounded sm:mx-2 mx-2 cursor-pointer text-white bg-blue-500"
+                                        data-link="<%= baseUrl %>/hisaab/<%= hisaab._id %>">
+                                        <i class="ri-share-line"></i> share as a link
+                                    </a>
+                                    <% } %>
 
-                                <a href="/hisaab/edit/<%= hisaab._id %>"
-                                    class="px-4 py-1 text-sm mr-2 bg-orange-500 text-white rounded">Edit</a>
+                                        <% if (deleteHisaab) { %>
+                                            <a href="/hisaab/delete/<%= hisaab._id %>"
+                                                class="sm:px-4 px-3 py-1 mr-2 bg-red-600 text-white rounded">Delete</a>
+                                            <% } %>
+
+                                                <% if (editHisaab) { %>
+                                                    <a href="/hisaab/edit/<%= hisaab._id %>"
+                                                        class="sm:px-4 px-3 py-1 mr-2 bg-orange-500 text-white rounded">Edit</a>
+                                                    <% } %>
+
                 </div>
 
-                <p class=" mt-2 text-zinc-400">Created on <span>
+                <p class="mt-2 text-zinc-400">Created on <span>
                         <%= hisaab.date.toISOString().slice(0,10).split('-').reverse().join('-') %>
                     </span></p>
-                <h3 class="text-xl font-semibold mt-5">
-                    <%=hisaab.title%>
+                <h3 class="text-2xl font-semibold mt-3">
+                    <%= hisaab.title %>
                 </h3>
                 <p class="text-lg mt-1">
-                    <%=hisaab.desc%>
+                    <%= hisaab.desc %>
                 </p>
-
             </div>
+
+            <% if(successMessage) { %>
+                <div id="flash-message"
+                    class="error absolute left-1/2 -translate-x-[50%] top-12 sm:top-4 text-sm sm:text-base rounded bg-green-500 text-white sm:px-5 px-3 py-2 text-center ">
+                    <%= successMessage %>
+                </div>
+                <% } %>
     </div>
 
+    <script>
+        document.querySelectorAll('.share-link').forEach(button => {
+            button.addEventListener('click', function () {
+                const link = this.getAttribute('data-link');
+                if (link) {  // Ensure the link is not null
+                    navigator.clipboard.writeText(link);
+                } else {
+                    alert('Failed to copy the link.');
+                }
+            });
+        });
+
+        setTimeout(() => {
+            document.getElementById('flash-message').style.display = 'none';
+        }, 3000);
+    </script>
     <script src="/js/script.js"></script>
 
 </body>

@@ -13,21 +13,32 @@ router.get("/signin", (req, res) => {
 
 router.get("/signup", (req, res) => {
   const signUpMessage = req.flash("signUpMessage");
+  const signInMessage = req.flash("signInMessage");
+
   res.render("signup", {
     signUpMessage: signUpMessage.length > 0 ? signUpMessage[0] : null,
+    signInMessage: signInMessage.length > 0 ? signInMessage[0] : null,
   });
 });
 
 router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
   const user = await userModel.findOne({ email });
+
+  if (user === null) {
+    req.flash("signInMessage", "Please create an account first");
+    return res.redirect("/signup");
+  }
   const isMatch = await bcrypt.compare(password, user.password);
   if (user && isMatch) {
-    req.session.user = user.email;
+    req.session.user = {
+      _id: user._id,
+      email: email,
+    };
     req.flash("signInSuccess", "Login successfull");
     return res.redirect("/");
   } else {
-    req.flash("signInMessage", "Invalid credentials");
+    req.flash("signInMessage", "Invalid password");
     res.redirect("/signin");
   }
   // res.send(users);
@@ -60,7 +71,10 @@ router.post("/signup", async (req, res) => {
       password: hashedPassword,
     });
 
-    req.session.user = user.email;
+    req.session.user = {
+      _id: user._id,
+      email: email,
+    };
 
     res.redirect("/");
   } catch (error) {

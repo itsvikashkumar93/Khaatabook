@@ -6,7 +6,7 @@ const flash = require("connect-flash");
 
 router.get("/", isLoggedIn, async (req, res) => {
   const user = await userModel
-    .findOne({ email: req.session.user })
+    .findOne({ email: req.session.user.email })
     .populate("hisaabs");
 
   const errorMessage = req.flash("errorMessage");
