@@ -17,15 +17,15 @@
 
             <div class="hisaabs h-[92vh]">
                 <div class="filter py-8 pb-5">
-                    <button class="sm:px-5 px-4 py-2 sm:mr-5 mr-1 bg-zinc-100 rounded-md">Filters <i
+                    <button class="sm:px-5 px-2 py-2 sm:mr-5 mr-1 bg-zinc-100 rounded-md">Filters <i
                             class="ri-sound-module-line"></i></button>
-                    <button class="sm:px-5 px-4 py-2 sm:mr-5 mr-1 bg-blue-100 rounded-md">Coming soon...</button>
-                    <!-- <button class="sm:px-5 px-2 py-2 sm:mr-5 mr-1 bg-zinc-100 rounded-md">By date <i
+                    <!-- <button class="sm:px-5 px-4 py-2 sm:mr-5 mr-1 bg-blue-100 rounded-md">Coming soon...</button> -->
+                    <button class="sm:px-5 px-2 py-2 sm:mr-5 mr-1 bg-zinc-100 rounded-md">By date <i
                             class="ri-calendar-line"></i></button>
                     <button class="sm:px-5 px-2 py-2 sm:mr-5 bg-blue-600 text-white rounded-md">Newest First <i
-                            class="ri-arrow-down-s-line"></i></button> -->
+                            class="ri-arrow-down-s-line"></i></button>
                 </div>
-                <h1 class="text-xl mb-3">Hello <span class="font-semibold">
+                <h1 class="text-xl mb-3">Hello, <span class="font-semibold">
                         <%= name %>
                     </span>
                 </h1>
@@ -74,7 +74,7 @@
                             </div>
                             <% }) %>
                                 <% } else { %>
-                                    <h1 class="text-lg">Nothing to show, create a hisaab</h1>
+                                    <h1 class="text-lg">Nothing to show, <a href="/hisaab/create" class="underline text-blue-600">create a hisaab</a></h1>
                                     <% } %>
                 </div>
                 <!-- Single Password Model (Outside the loop) -->

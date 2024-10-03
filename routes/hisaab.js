@@ -37,6 +37,8 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
     await newHisaab.save();
     await user.save();
 
+    req.flash("successMessage", "Hisaab created");
+
     res.redirect("/");
   } catch (error) {
     console.error("Error saving Hisaab:", error);
@@ -147,6 +149,9 @@ router.get("/delete/:id", isLoggedIn, async (req, res) => {
     user.hisaabs.splice(index, 1);
   }
   await user.save();
+
+  req.flash("successMessage", "Hisaab deleted");
+
   res.redirect("/");
 });
 
